@@ -1,7 +1,7 @@
 #import phonenumbers
 #from myNumber import number
 import phonenumbers
-from phonenumbers import geocoder
+from phonenumbers import geocoder, carrier
 from phonenumbers import PhoneNumberType
 from phonenumbers import carrier
 from opencage.geocoder import OpenCageGeocode
@@ -9,19 +9,44 @@ import numpy as np
 import pandas as pd
 import folium
 import webbrowser
+import time
 
 
 Key = '813978e32347461bb2d53b777a9545e2'
-
-number = input('Enter Phone number to see past locations: ')
+print('Enter Phone number to see past locations: ')
+number=input('**')
 phonenumber = phonenumbers.parse(number)
 print(f'{number}')
-yourLocation = geocoder.description_for_number(number, 'en')
+print(type(number))
+print(f'{phonenumber}')
+print(type(phonenumber))
+time.sleep(5)
+
+yourLocation = geocoder.description_for_number(phonenumber, 'en')
+Region = geocoder.description_for_number(phonenumber, 'en')
+isValid = phonenumbers.is_valid_number(phonenumber)
+# Checking possibility of a number
+isPossible = phonenumbers.is_possible_number(phonenumber)
+serviceProvider = carrier.name_for_number(phonenumber, 'en')
+#sserviceProvider = phonenumbers.parse(phonenumber)
+
+
 print(f'[LOCATION] {yourLocation}')
+time.sleep(1)
+print(f'[REGION] {Region}')
+time.sleep(1)
+print(f'[VALID] {isValid}')
+time.sleep(1)
+print(f'[Is Possible?] {isPossible}')
+time.sleep(1)
+print(f'[SERVICE-PROVIDER?] {serviceProvider}')
+time.sleep(1)
+
+
+
 
 numNum2 = phonenumbers.parse(number)
 
-#serviceProvider = carrier.name_for_number(numNum2, 'en')
 #print(f'[SERVICEPROVIDER] {serviceProvider}')
 ##print('*' * 100)
 
@@ -29,6 +54,9 @@ numNum2 = phonenumbers.parse(number)
 geocoder = OpenCageGeocode(Key)
 query = str(yourLocation)
 results = geocoder.geocode(query)
+print('Query;', query)
+print('Results;', results)
+
 #for x in range(len(results)):     ### ---> DEBUGGING - TO VIEW ARRAY BEFORE CONVER TO DF
     #print(f'{results[x]} \n', 'x' * 100)
 #print(type(query)) #<- debug purpose
@@ -41,7 +69,6 @@ print('*' * 100)
 print(f'[EXPORT] ..saved as coordinates.txt {df.head(2)}')
 df.to_csv(r'\coordinates.csv', index = False)
 #########################
-
 myMap = folium.Map(location = [lat, lng], zoom_start = 9)
 folium.Marker([lat, lng], popup = yourLocation).add_to(myMap)
 myMap.save('eyespy.html')
