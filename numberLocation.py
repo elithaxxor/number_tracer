@@ -21,6 +21,8 @@ import ipywidgets as widgets
 import geopy
 
 
+## shodon shodan.io (for accessing IOT devices) 
+SHODON_KEY = 'O49Ksy1HyForTiu99jJGRk7nJY2JSwvN'
 
 
 Key = '813978e32347461bb2d53b777a9545e2'
